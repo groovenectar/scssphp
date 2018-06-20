@@ -4857,8 +4857,10 @@ class Compiler
                 $unit = $number[2];
                 $originalUnit = $item->unitStr();
             } elseif ($unit !== $number[2]) {
-                $this->throwError('Incompatible units: "%s" and "%s".', $originalUnit, $item->unitStr());
-                break;
+                if ($item->dimension !== '0' || !empty($item->units) || !in_array($originalUnit, ['px', '%'])) {
+                    $this->throwError('Incompatible units: "%s" and "%s".', $originalUnit, $item->unitStr());
+                    break;
+                }
             }
 
             $numbers[$key] = $number;
